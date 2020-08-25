@@ -1,0 +1,130 @@
+{% extends 'layouts/main.html' %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<header>
+    <div class="collapse bg-dark" id="navbarHeader">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-4 offset-md-1 py-4">
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main role="main">
+    <div class="album py-5 bg-light">
+      <div class="container">
+        <div class="row">
+          <ul>
+            {% for (i, dist) in results %}
+              <li>{{i, dist}}</li>
+            <!--<li class="col-md-4 card" id='{{ i + "_card" }}'>-->
+                <!--<img class="card-img-top" src="{{ url_for('static', filename='img/all/' + i.split('_')[0] + '/' + i.split('_')[1]) }}" alt="Card image cap">-->
+                <!--<div class="card-body">-->
+                  <!--&lt;!&ndash;<p class="card-text"><a onclick="window.open('http://tarski.cs-i.brandeis.edu:5100/query/{{i}}')">{{i}}</a></p> &lt;!&ndash; get this for annotation &ndash;&gt;&ndash;&gt;-->
+                  <!--<p class="card-text">{{dist}}</p>-->
+                  <!--<div class="d-flex justify-content-between align-items-center">-->
+                    <!--<div class="btn-group">-->
+                      <!--&lt;!&ndash;<button type="button" class="btn btn-sm btn-outline-secondary" onclick="window.open('{{ url_for('static', filename='img/all/' + i.split('_')[0] + '/' + i.split('_')[1] )}}','_blank');">View</button>&ndash;&gt;-->
+                      <!--<button type="button" class="btn btn-sm" data-toggle="modal" data-target="#exampleModal" data-whatever="{{ i }}">Open modal for {{ i }}</button>-->
+                        <!--<button class="btn btn-sm" onclick="window.open('http://tarski.cs-i.brandeis.edu:5100/query/{{i}}')">{{i}}</button>-->
+                    <!--</div>-->
+                  <!--</div>-->
+                <!--</div>-->
+            <!--</li>-->
+            {% endfor %}
+          </ul>
+
+          <!-- Annotation Modal ---->
+          <div class="modal fade" id="annotationModal" tabindex="-1" role="dialog" aria-labelledby="annotationModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                    <label id="selectedCount"></label>
+                </div>
+                <div class="modal-body col">
+                    <div class="row clearfix" width="auto">
+                        <form action="/update" id="bulk_form" onsubmit="DoSubmit();" method="POST">
+                            <div class="col-md-12 column">
+                                <table class="table table-bordered table-hover" id="tab_logic">
+                                    <thead>
+                                        <tr >
+                                            <th class="text-center">
+                                                Label
+                                            </th>
+                                            <th class="text-center">
+                                                Value
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr id='addr0'>
+                                            <td>
+                                            <input type="text" name='label0'  placeholder='label' class="form-control"/>
+                                            </td>
+                                            <td>
+                                            <input type="text" name='value0' placeholder='value' class="form-control"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <input id="filelist" type="text" hidden name="filelist" value="">
+                            </div>
+                            <button type="submit" value="Update Index">Update Index</button>
+                        </form>
+                    <!--<a id="add_row" class="btn btn-default pull-left">Add Row</a><a id='delete_row' class="btn btn-default pull-right">Delete Row</a>-->
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Document Modal -->
+          <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel"></h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body row">
+                  <div class="col" id="contents">
+                  </div>
+                    <div id="annotations" class="col">
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary">Update</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+      <button class="btn" id="toggle">Toggle All</button>
+      <!---Submit annotations --->
+      <a href="#" class="float">
+          <button style="background:None; border:None" type="button" class="my-float" data-toggle="modal" data-target="#annotationModal">+</button>
+      </a>
+
+  </main>
+  <footer class="text-muted">
+    <div class="container">
+      <p class="float-right">
+        <a href="#">Back to top</a>
+      </p>
+    </div>
+  </footer>
+  <script src="{{url_for('static', filename='js/libs/jquery-1.11.1.min.js')}}"></script>
+  <script src="{{url_for('static', filename='js/main.js')}}"></script>
+
+{% endblock %}
